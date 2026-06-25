@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 성장 체크리스트</title>
+  <style>
+    body { background-color: #f1f3f5; font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 0; color: #333; }
+    .container { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+    header { text-align: center; padding: 30px 20px; }
+    header h1 { font-size: 22px; font-weight: bold; margin: 0; color: #2c3e50; }
+    header p { font-size: 14px; color: #7f8c8d; margin-top: 5px; }
+    
+    /* 인적 사항 섹션 */
+    .user-info-section { padding: 0 20px 20px; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+    .user-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .user-info-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; }
+    .user-info-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.1); }
+
+    /* 체크리스트 섹션 */
+    #checklist { padding: 0 20px 120px; }
+    .category-group { margin-bottom: 35px; }
+    .category-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+    
+    .cat-신체 .category-title { color: #3b82f6; border-color: #dbeafe; }
+    .cat-사회정서 .category-title { color: #16a34a; border-color: #dcfce7; }
+    .cat-성 .category-title { color: #db2777; border-color: #fce7f3; }
+    .cat-진로 .category-title { color: #f59e0b; border-color: #fef3c7; }
+
+    .check-list-container { display: flex; flex-direction: column; gap: 12px; }
+    .check-label { display: flex; align-items: flex-start; cursor: pointer; padding: 4px 0; }
+    .check-label input { display: none; }
+    
+    /* 커스텀 체크박스 */
+    .custom-checkbox { width: 22px; height: 22px; border: 2px solid #ddd; border-radius: 6px; margin-right: 12px; position: relative; background: #fff; flex-shrink: 0; transition: 0.2s; }
+    input:checked + .custom-checkbox { background-color: #3b82f6; border-color: #3b82f6; }
+    input:checked + .custom-checkbox::after { content: ''; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid white; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+
+    .check-text { font-size: 15px; line-height: 1.5; color: #444; }
+
+    /* 기타 입력창 스타일 */
+    .etc-container { display: flex; gap: 8px; margin-top: 15px; padding-top: 10px; }
+    .etc-input { flex-grow: 1; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 13px; outline: none; background: #fafafa; }
+    .etc-btn { padding: 0 15px; background: #475569; color: white; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: bold; }
+
+    /* 하단 저장 버튼 */
+    #submitBtn { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 440px; margin: 0 auto; background: #3b82f6; color: white; font-weight: bold; font-size: 16px; padding: 18px; border: none; border-radius: 15px; cursor: pointer; z-index: 100; box-shadow: 0 4px 15px rgba(59,130,246,0.3); transition: 0.3s; }
+    #submitBtn:active { transform: scale(0.98); }
+    #submitBtn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌱 나의 성장 체크리스트</h1>
+      <p>매주 나의 건강한 발달을 기록해요</p>
+    </header>
+
+    <div class="user-info-section">
+      <div class="user-info-grid">
+        <input type="date" id="input_date" class="user-info-input">
+        <input type="text" id="input_class" placeholder="반 (예: 5-1)" class="user-info-input">
+        <input type="number" id="input_num" placeholder="번호" class="user-info-input">
+        <input type="text" id="input_name" placeholder="이름" class="user-info-input">
+      </div>
+    </div>
+
+    <div id="checklist">
+      <div class="category-group cat-신체" data-category="신체">
+        <h2 class="category-title">🏃 건강한 신체 발달</h2>
+        <div class="check-list-container" id="list-신체">
+          <label class="check-label"><input type="checkbox" value="매일 30분 이상 달리기나 운동"><span class="custom-checkbox"></span><span class="check-text">매일 30분 이상 달리기나 운동</span></label>
+          <label class="check-label"><input type="checkbox" value="편식하지 않고 영양소를 골고루 섭취"><span class="custom-checkbox"></span><span class="check-text">편식하지 않고 영양소를 골고루 섭취</span></label>
+          <label class="check-label"><input type="checkbox" value="정해진 시간에 규칙적으로 식사"><span class="custom-checkbox"></span><span class="check-text">정해진 시간에 규칙적으로 식사</span></label>
+          <label class="check-label"><input type="checkbox" value="정해진 시간에 잠을 충분히 자기"><span class="custom-checkbox"></span><span class="check-text">정해진 시간에 잠을 충분히 자기</span></label>
+          <label class="check-label"><input type="checkbox" value="바른 자세 유지"><span class="custom-checkbox"></span><span class="check-text">바른 자세 유지</span></label>
+        </div>
+        <div class="etc-container">
+          <input type="text" id="etc-신체" class="etc-input" placeholder="기타 신체 활동 입력...">
+          <button class="etc-btn" onclick="addEtcItem('신체')">추가</button>
+        </div>
+      </div>
+
+      <div class="category-group cat-사회정서" data-category="사회정서">
+        <h2 class="category-title">🤝 건강한 사회정서 발달</h2>
+        <div class="check-list-container" id="list-사회정서">
+          <label class="check-label"><input type="checkbox" value="또래 친구들과 사이좋게 지내기"><span class="custom-checkbox"></span><span class="check-text">또래 친구들과 사이좋게 지내기</span></label>
+          <label class="check-label"><input type="checkbox" value="서로 다른 모습을 존중하고 배려하기"><span class="custom-checkbox"></span><span class="check-text">서로 다른 모습을 존중하고 배려하기</span></label>
+          <label class="check-label"><input type="checkbox" value="하루동안 겪은 내 감정과 생각을 일기에 쓰기"><span class="custom-checkbox"></span><span class="check-text">하루동안 겪은 내 감정과 생각을 일기에 쓰기</span></label>
+          <label class="check-label"><input type="checkbox" value="취미활동을 하며 감정 조절"><span class="custom-checkbox"></span><span class="check-text">취미활동을 하며 감정 조절</span></label>
+          <label class="check-label"><input type="checkbox" value="어려운 일이 있을 때 도움 요청"><span class="custom-checkbox"></span><span class="check-text">어려운 일이 있을 때 도움 요청</span></label>
+        </div>
+        <div class="etc-container">
+          <input type="text" id="etc-사회정서" class="etc-input" placeholder="기타 사회정서 활동 입력...">
+          <button class="etc-btn" onclick="addEtcItem('사회정서')">추가</button>
+        </div>
+      </div>
+
+      <div class="category-group cat-성" data-category="성">
+        <h2 class="category-title">🌸 건강한 성 발달</h2>
+        <div class="check-list-container" id="list-성">
+          <label class="check-label"><input type="checkbox" value="몸에 꽉 끼는 옷차림은 피하기"><span class="custom-checkbox"></span><span class="check-text">몸에 꽉 끼는 옷차림은 피하기</span></label>
+          <label class="check-label"><input type="checkbox" value="내몸의 변화를 매일 관찰하기"><span class="custom-checkbox"></span><span class="check-text">내몸의 변화를 매일 관찰하기</span></label>
+          <label class="check-label"><input type="checkbox" value="속옷을 자주 갈아입기"><span class="custom-checkbox"></span><span class="check-text">속옷을 자주 갈아입기</span></label>
+          <label class="check-label"><input type="checkbox" value="성에 관해 궁금한 점을 부모님이나 선생님과 상의하기"><span class="custom-checkbox"></span><span class="check-text">부모님이나 선생님과 성 고민 상담하기</span></label>
+          <label class="check-label"><input type="checkbox" value="청결 유지하기"><span class="custom-checkbox"></span><span class="check-text">청결 유지하기</span></label>
+        </div>
+        <div class="etc-container">
+          <input type="text" id="etc-성" class="etc-input" placeholder="기타 성 발달 활동 입력...">
+          <button class="etc-btn" onclick="addEtcItem('성')">추가</button>
+        </div>
+      </div>
+
+      <div class="category-group cat-진로" data-category="진로">
+        <h2 class="category-title">🚀 진로 발달</h2>
+        <div class="check-list-container" id="list-진로">
+          <label class="check-label"><input type="checkbox" value="관심 있는 직업인을 찾아가 직접 인터뷰하기"><span class="custom-checkbox"></span><span class="check-text">관심 있는 직업인 인터뷰하기</span></label>
+          <label class="check-label"><input type="checkbox" value="진로 계획 세우기"><span class="custom-checkbox"></span><span class="check-text">나의 진로 계획 세우기</span></label>
+          <label class="check-label"><input type="checkbox" value="다양한 분야의 책을 읽으며 관심사 찾기"><span class="custom-checkbox"></span><span class="check-text">다양한 분야의 독서활동</span></label>
+          <label class="check-label"><input type="checkbox" value="내 흥미와 적성에 맞는 활동 꾸준히 하기"><span class="custom-checkbox"></span><span class="check-text">흥미와 적성 활동 꾸준히 하기</span></label>
+        </div>
+        <div class="etc-container">
+          <input type="text" id="etc-진로" class="etc-input" placeholder="기타 진로 활동 입력...">
+          <button class="etc-btn" onclick="addEtcItem('진로')">추가</button>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="submitData()" id="submitBtn">오늘의 성장 기록 저장</button>
+  </div>
+
+  <script>
+    document.getElementById('input_date').valueAsDate = new Date();
+
+    function addEtcItem(cat) {
+      const input = document.getElementById('etc-' + cat);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('list-' + cat);
+      const newLabel = document.createElement('label');
+      newLabel.className = 'check-label';
+      newLabel.innerHTML = `
+        <input type="checkbox" value="${text}" checked>
+        <span class="custom-checkbox"></span>
+        <span class="check-text">${text} (직접 입력)</span>
+      `;
+      container.appendChild(newLabel);
+      input.value = '';
+    }
+
+    function submitData() {
+      const userInfo = {
+        date: document.getElementById('input_date').value,
+        classGroup: document.getElementById('input_class').value,
+        number: document.getElementById('input_num').value,
+        name: document.getElementById('input_name').value
+      };
+
+      if (!userInfo.classGroup || !userInfo.name || !userInfo.number) {
+        alert("반, 번호, 이름을 모두 입력해주세요!");
+        return;
+      }
+
+      const checkedItems = [];
+      document.querySelectorAll('.category-group').forEach(group => {
+        const category = group.getAttribute('data-category');
+        group.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+          checkedItems.push({ category: category, task: cb.value });
+        });
+      });
+
+      if (checkedItems.length === 0) {
+        alert("최소 하나 이상의 항목을 선택해주세요.");
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = "데이터 전송 중...";
+
+      google.script.run
+        .withSuccessHandler(msg => {
+          alert(msg);
+          location.reload();
+        })
+        .withFailureHandler(err => {
+          alert("저장 실패: " + err);
+          btn.disabled = false;
+          btn.innerText = "오늘의 성장 기록 저장";
+        })
+        .saveData(userInfo, checkedItems);
+    }
+  </script>
+</body>
+</html>
